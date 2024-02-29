@@ -43,4 +43,36 @@ public class SemanticAnalysisHandlerTests {
     h.handleRequest(input3);
     assertEquals(expected, h.handleRequest(input4));
   }
+    @Test
+  public void handleRequestSemanticAnalysisLOL() throws Exception {
+    ChatHandler h = new ChatHandler();
+    String url = "http://localhost:4000/chat?user=john&message=LOL";
+    URI input = new URI(url);
+    String expected = "john: LOL This message has a LOL vibe.\n\n";
+    h.handleRequest(input);
+    String result = h.handleRequest(new URI("http://localhost:4000/semantic-analysis?user=john"));
+    assertEquals(expected, result);
+  }
+
+  @Test
+  public void handleRequestSemanticAnalysisAww() throws Exception {
+    ChatHandler h = new ChatHandler();
+    String url = "http://localhost:4000/chat?user=mary&message=doggy🥹!!!";
+    URI input = new URI(url);
+    String expected = "mary: doggy🥹!!! This message has a awwww vibe. This message ends forcefully.\n\n";
+    h.handleRequest(input);
+    String result = h.handleRequest(new URI("http://localhost:4000/semantic-analysis?user=mary"));
+    assertEquals(expected, result);
+  }
+
+  @Test
+  public void handleRequestSemanticAnalysisNoMatch() throws Exception {
+    ChatHandler h = new ChatHandler();
+    String url = "http://localhost:4000/chat?user=bob&message=Just a regular message";
+    URI input = new URI(url);
+    String expected = "bob: Just a regular message\n\n";
+    h.handleRequest(input);
+    String result = h.handleRequest(new URI("http://localhost:4000/semantic-analysis?user=bob"));
+    assertEquals(expected, result);
+  }
 }
